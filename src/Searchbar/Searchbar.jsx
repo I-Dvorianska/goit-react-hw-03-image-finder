@@ -12,16 +12,20 @@ class Searchbar extends Component {
     });
   };
 
-    onSearchBtnClick = (e) => {
-        const { onSubmit } = this.props;
-        const { search } = this.state;
+  
 
-        e.preventDefault();
-        onSubmit(search);
+    onSearchBtnClick = (e) => {
+      const { onSubmit } = this.props;
+      const { search } = this.state;
+
+      e.preventDefault();
+      onSubmit(search);
+
+      this.setState({ search: ""})
   };
 
     render() {
-        const { onSearchBtnClick, getSearchText } = this;
+        const { onSearchBtnClick, getSearchText, state} = this;
 
 
     return (
@@ -35,6 +39,7 @@ class Searchbar extends Component {
             onChange={getSearchText}
             className="SearchForm-input"
             type="text"
+            value={state.search}
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
