@@ -1,9 +1,12 @@
 import './ImageGallery';
-// import ImageGalleryItem from 'ImageGalleryItem/ImageGalleryItem';
+import ImageGalleryItem from 'ImageGalleryItem/ImageGalleryItem';
 
-const ImageGallery = () => {
+const ImageGallery = ({ images }) => {
+    console.log(images)
     return <ul className="ImageGallery">
-  
+        {images.map(image => {
+            return <ImageGalleryItem item={image}/>
+  })}
 </ul>
 }
 

@@ -1,8 +1,9 @@
 import './ImageGalleryItem.css';
 
-const ImageGalleryItem = () => {
-    return <li className="ImageGalleryItem">
-  <img src="" alt="" className="ImageGalleryItem-image" />
+const ImageGalleryItem = ({ item }) => {
+  console.log(item)
+  return <li key={item.id} className="ImageGalleryItem">
+  <img src={item.webformatURL} alt="" className="ImageGalleryItem-image" />
 </li>
 }
 

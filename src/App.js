@@ -1,8 +1,8 @@
 import { Component } from "react";
 import Searchbar from "./Searchbar/Searchbar";
 import "./App.css";
-// import { f} from "utils/fetchApi";
-import Api from "utils/fetchApi";
+import ImageGallery from "ImageGalleryItem/ImageGalleryItem";
+import fetchImages from "utils/fetchApi";
 
 class App extends Component {
   state = {
@@ -11,20 +11,13 @@ class App extends Component {
     page: 1,
   };
 
-  componentDidUpdate(prevState) {
-    const { page, searchText, images } = this.state;
+  componentDidUpdate(prevProps, prevState) {
+    const { page, searchText } = this.state;
+
     if (prevState.searchText !== searchText) {
-      console.log(prevState.searchText);
-      console.log(this.state.searchText);
-      //   const result = fetchApi(page, searchText);
-      //   console.log(fetchApi(page, searchText));
-      //   this.setState({ images: result });
-      //   console.log(images);
-      //   console.log(
-      //     Api.fetchImages(page, searchText).then((res) =>
-      //     //   this.setState({ images: res.hits })
-      //     )
-      //   );.
+      fetchImages(page, searchText).then((res) =>
+        this.setState({ images: res.hits })
+      );
     }
   }
 
@@ -36,10 +29,12 @@ class App extends Component {
 
   render() {
     const { getSearchFieldText } = this;
+    const { images } = this.state;
 
     return (
       <>
         <Searchbar onSubmit={getSearchFieldText} />
+        {images.length > 0 && <ImageGallery images={images} />}
       </>
     );
   }
