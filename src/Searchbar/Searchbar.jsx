@@ -21,7 +21,7 @@ class Searchbar extends Component {
       e.preventDefault();
       onSubmit(search);
 
-      this.setState({ search: ""})
+      
   };
 
     render() {

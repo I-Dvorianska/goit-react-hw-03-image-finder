@@ -26,19 +26,24 @@ class App extends Component {
 
     if (prevState.page !== page) {
       if (page !== 1) {
-        fetchImages(searchText, page).then((res) => {
-          const imagesData = res.hits;
-          this.setState({
-            images: [...this.state.images, ...imagesData],
-          });
-        });
+        fetchImages(searchText, page)
+          .then((res) => {
+            const imagesData = res.hits;
+            this.setState({
+              images: [...this.state.images, ...imagesData],
+            });
+          })
+          .finally(this.scrollToBottom);
       }
     }
   }
 
-  // reset = () => {
-
-  // };
+  scrollToBottom = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
+  };
 
   getSearchFieldText = (text) => {
     this.setState({
@@ -58,7 +63,7 @@ class App extends Component {
       <>
         <Searchbar onSubmit={getSearchFieldText} />
         {images.length > 0 && <ImageGallery images={images} />}
-        <Button page={page} onLoad={changePageNumber} />
+        {images.length > 0 && <Button page={page} onLoad={changePageNumber} />}
       </>
     );
   }
