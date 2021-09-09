@@ -16,26 +16,29 @@ class App extends Component {
     const { page, searchText } = this.state;
 
     if (prevState.searchText !== searchText) {
-      this.resetPage();
-      fetchImages(searchText, page).then((res) => {
+      this.setState({ images: [] });
+
+      fetchImages(searchText, 1).then((res) => {
         const imagesData = res.hits;
         this.setState({ images: imagesData });
       });
     }
 
     if (prevState.page !== page) {
-      fetchImages(searchText, page).then((res) => {
-        const imagesData = res.hits;
-        this.setState({
-          images: [...this.state.images, ...imagesData],
+      if (page !== 1) {
+        fetchImages(searchText, page).then((res) => {
+          const imagesData = res.hits;
+          this.setState({
+            images: [...this.state.images, ...imagesData],
+          });
         });
-      });
+      }
     }
   }
 
-  resetPage = () => {
-    this.setState({ page: 1 });
-  };
+  // reset = () => {
+
+  // };
 
   getSearchFieldText = (text) => {
     this.setState({
