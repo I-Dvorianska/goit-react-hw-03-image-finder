@@ -1,7 +1,7 @@
 import { Component } from "react";
 import Searchbar from "./Searchbar/Searchbar";
 import "./App.css";
-import ImageGallery from "ImageGalleryItem/ImageGalleryItem";
+import ImageGallery from "./ImageGallery/ImageGallery";
 import fetchImages from "utils/fetchApi";
 
 class App extends Component {
@@ -15,9 +15,10 @@ class App extends Component {
     const { page, searchText } = this.state;
 
     if (prevState.searchText !== searchText) {
-      fetchImages(page, searchText).then((res) =>
-        this.setState({ images: res.hits })
-      );
+      fetchImages(searchText, page).then((res) => {
+        const imagesData = res.hits;
+        this.setState({ images: imagesData });
+      });
     }
   }
 
