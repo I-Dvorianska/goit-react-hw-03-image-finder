@@ -2,6 +2,7 @@ import { Component } from "react";
 import Searchbar from "./Searchbar/Searchbar";
 import "./App.css";
 import ImageGallery from "./ImageGallery/ImageGallery";
+import Button from "./Button/Button";
 import fetchImages from "utils/fetchApi";
 
 class App extends Component {
@@ -15,12 +16,26 @@ class App extends Component {
     const { page, searchText } = this.state;
 
     if (prevState.searchText !== searchText) {
+      this.resetPage();
       fetchImages(searchText, page).then((res) => {
         const imagesData = res.hits;
         this.setState({ images: imagesData });
       });
     }
+
+    if (prevState.page !== page) {
+      fetchImages(searchText, page).then((res) => {
+        const imagesData = res.hits;
+        this.setState({
+          images: [...this.state.images, ...imagesData],
+        });
+      });
+    }
   }
+
+  resetPage = () => {
+    this.setState({ page: 1 });
+  };
 
   getSearchFieldText = (text) => {
     this.setState({
@@ -28,14 +43,19 @@ class App extends Component {
     });
   };
 
+  changePageNumber = (page) => {
+    this.setState({ page });
+  };
+
   render() {
-    const { getSearchFieldText } = this;
-    const { images } = this.state;
+    const { getSearchFieldText, changePageNumber } = this;
+    const { images, page } = this.state;
 
     return (
       <>
         <Searchbar onSubmit={getSearchFieldText} />
         {images.length > 0 && <ImageGallery images={images} />}
+        <Button page={page} onLoad={changePageNumber} />
       </>
     );
   }
