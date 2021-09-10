@@ -5,6 +5,7 @@ import Searchbar from "./Searchbar/Searchbar";
 import "./App.css";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import Button from "./Button/Button";
+import Modal from "./Modal/Modal";
 import fetchImages from "utils/fetchApi";
 
 class App extends Component {
@@ -12,7 +13,8 @@ class App extends Component {
     searchText: "",
     images: [],
     page: 1,
-    loading: false,
+    loading: true,
+    selectedImage: "null",
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -60,25 +62,34 @@ class App extends Component {
     this.setState({ page });
   };
 
+  selectImage = (image) => {
+    this.setState({ selectedImage: image });
+  };
+
   render() {
-    const { getSearchFieldText, changePageNumber } = this;
-    const { images, page, loading } = this.state;
+    const { getSearchFieldText, changePageNumber, selectImage } = this;
+    const { images, page, loading, selectedImage } = this.state;
 
     return (
       <>
         <Searchbar onSubmit={getSearchFieldText} />
 
-        {images.length > 0 && <ImageGallery images={images} />}
-        {loading && (
-          <Loader
-            type="Circles"
-            color="#46c5f0"
-            height={40}
-            width={60}
-            timeout={3000}
-            style={{ marginLeft: 620, marginTop: 15 }}
-          />
+        {images.length > 0 && (
+          <ImageGallery images={images} selected={selectImage} />
         )}
+        {loading && (
+          <div className="LoaderDiv">
+            <Loader
+              type="Circles"
+              color="#46c5f0"
+              height={40}
+              width={60}
+              style={{ marginLeft: 625 }}
+              timeout={3000}
+            />
+          </div>
+        )}
+        {selectedImage !== "null" && <Modal image={selectedImage} />}
         {images.length > 0 && <Button page={page} onLoad={changePageNumber} />}
       </>
     );

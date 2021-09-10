@@ -1,11 +1,11 @@
 import './Modal.css';
 
-const Modal = () => {
+const Modal = ({image}) => {
     return <div className="Overlay">
   <div className="Modal">
-    <img src="" alt="" />
+    <img src={image} alt="" />
   </div>
-</div>
+  </div>
 }
 
 export default Modal;
