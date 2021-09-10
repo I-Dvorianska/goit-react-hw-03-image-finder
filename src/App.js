@@ -13,7 +13,7 @@ class App extends Component {
     searchText: "",
     images: [],
     page: 1,
-    loading: true,
+    loading: false,
     selectedImage: "null",
   };
 
@@ -66,8 +66,18 @@ class App extends Component {
     this.setState({ selectedImage: image });
   };
 
+  onClose = () => {
+    this.setState({ selectedImage: "null" });
+  };
+
+  // onOverlayClick = (e) => {
+  //   if (e.currentTarget === e.target) {
+  //     this.onClose();
+  //   }
+  // };
+
   render() {
-    const { getSearchFieldText, changePageNumber, selectImage } = this;
+    const { getSearchFieldText, changePageNumber, selectImage, onClose } = this;
     const { images, page, loading, selectedImage } = this.state;
 
     return (
@@ -84,12 +94,14 @@ class App extends Component {
               color="#46c5f0"
               height={40}
               width={60}
-              style={{ marginLeft: 625 }}
-              timeout={3000}
+              style={{ marginLeft: "625px" }}
+              timeout={2000}
             />
           </div>
         )}
-        {selectedImage !== "null" && <Modal image={selectedImage} />}
+        {selectedImage !== "null" && (
+          <Modal image={selectedImage} onClick={onClose} />
+        )}
         {images.length > 0 && <Button page={page} onLoad={changePageNumber} />}
       </>
     );
