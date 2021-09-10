@@ -6,6 +6,7 @@ import "./App.css";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import Button from "./Button/Button";
 import Modal from "./Modal/Modal";
+import toast, { Toaster } from "react-hot-toast";
 import fetchImages from "utils/fetchApi";
 
 class App extends Component {
@@ -25,7 +26,11 @@ class App extends Component {
 
       fetchImages(searchText, 1).then((res) => {
         const imagesData = res.hits;
-        this.setState({ images: imagesData, loading: false });
+        if (imagesData.length === 0) {
+          this.notify();
+        } else {
+          this.setState({ images: imagesData, loading: false });
+        }
       });
     }
 
@@ -44,6 +49,8 @@ class App extends Component {
       }
     }
   }
+
+  notify = () => toast("Here is no images to show");
 
   scrollToBottom = () => {
     window.scrollTo({
@@ -70,12 +77,6 @@ class App extends Component {
     this.setState({ selectedImage: "null" });
   };
 
-  // onOverlayClick = (e) => {
-  //   if (e.currentTarget === e.target) {
-  //     this.onClose();
-  //   }
-  // };
-
   render() {
     const { getSearchFieldText, changePageNumber, selectImage, onClose } = this;
     const { images, page, loading, selectedImage } = this.state;
@@ -83,7 +84,20 @@ class App extends Component {
     return (
       <>
         <Searchbar onSubmit={getSearchFieldText} />
-
+        <Toaster
+          containerStyle={{
+            top: 300,
+            left: 0,
+          }}
+          toastOptions={{
+            duration: 2000,
+            style: {
+              border: "2px solid #e60000",
+              padding: "8px",
+              color: "#e60000",
+            },
+          }}
+        />
         {images.length > 0 && (
           <ImageGallery images={images} selected={selectImage} />
         )}
@@ -94,15 +108,21 @@ class App extends Component {
               color="#46c5f0"
               height={40}
               width={60}
-              style={{ marginLeft: "625px" }}
-              timeout={2000}
+              style={{
+                marginLeft: "610px",
+                marginTop: "20px",
+                marginBottom: "20px",
+              }}
+              timeout={1000}
             />
           </div>
         )}
         {selectedImage !== "null" && (
           <Modal image={selectedImage} onClick={onClose} />
         )}
-        {images.length > 0 && <Button page={page} onLoad={changePageNumber} />}
+        {images.length > 0 && !loading && (
+          <Button page={page} onLoad={changePageNumber} />
+        )}
       </>
     );
   }
