@@ -16,6 +16,7 @@ class App extends Component {
     page: 1,
     loading: false,
     selectedImage: "null",
+    showBtn: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -26,10 +27,23 @@ class App extends Component {
 
       fetchImages(searchText, 1).then((res) => {
         const imagesData = res.hits;
+
         if (imagesData.length === 0) {
-          this.notify();
-        } else {
-          this.setState({ images: imagesData, loading: false });
+          return this.notify();
+        }
+        if (imagesData.length === 12) {
+          return this.setState({
+            images: imagesData,
+            loading: false,
+            showBtn: true,
+          });
+        }
+        if (imagesData.length < 12) {
+          return this.setState({
+            images: imagesData,
+            loading: false,
+            showBtn: false,
+          });
         }
       });
     }
@@ -40,6 +54,9 @@ class App extends Component {
         fetchImages(searchText, page)
           .then((res) => {
             const imagesData = res.hits;
+            if (imagesData.length < 12) {
+              this.setState({ showBtn: false });
+            }
             this.setState({
               images: [...this.state.images, ...imagesData],
               loading: false,
@@ -79,8 +96,8 @@ class App extends Component {
 
   render() {
     const { getSearchFieldText, changePageNumber, selectImage, onClose } = this;
-    const { images, page, loading, selectedImage } = this.state;
-
+    const { images, page, loading, selectedImage, showBtn } = this.state;
+    const showLoadMoreBtn = images.length > 0 && !loading && showBtn;
     return (
       <>
         <Searchbar onSubmit={getSearchFieldText} />
@@ -120,9 +137,7 @@ class App extends Component {
         {selectedImage !== "null" && (
           <Modal image={selectedImage} onClick={onClose} />
         )}
-        {images.length > 0 && !loading && (
-          <Button page={page} onLoad={changePageNumber} />
-        )}
+        {showLoadMoreBtn && <Button page={page} onLoad={changePageNumber} />}
       </>
     );
   }
