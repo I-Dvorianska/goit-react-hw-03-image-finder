@@ -1,5 +1,6 @@
 import './ImageGallery.css';
 import ImageGalleryItem from 'ImageGalleryItem/ImageGalleryItem';
+import PropTypes from 'prop-types';
 
 const ImageGallery = ({ images, selected }) => {
    
@@ -14,6 +15,11 @@ const ImageGallery = ({ images, selected }) => {
              />
              )}
             </ul>
+}
+
+ImageGallery.propTypes = {
+    images: PropTypes.arrayOf(PropTypes.object),
+    selected: PropTypes.func
 }
 
 export default ImageGallery;

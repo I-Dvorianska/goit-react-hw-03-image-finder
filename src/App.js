@@ -98,6 +98,7 @@ class App extends Component {
     const { getSearchFieldText, changePageNumber, selectImage, onClose } = this;
     const { images, page, loading, selectedImage, showBtn } = this.state;
     const showLoadMoreBtn = images.length > 0 && !loading && showBtn;
+
     return (
       <>
         <Searchbar onSubmit={getSearchFieldText} />

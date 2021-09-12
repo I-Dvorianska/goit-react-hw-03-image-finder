@@ -1,7 +1,13 @@
 import { Component } from "react";
 import './Searchbar.css';
+import PropTypes from 'prop-types';
 
 class Searchbar extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func,
+  }
+
+
   state = {
     search: "",
   };

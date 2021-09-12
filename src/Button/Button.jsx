@@ -1,7 +1,13 @@
 import { Component } from 'react';
 import './Button.css';
+import PropTypes from 'prop-types';
 
 class Button extends Component {
+
+    static propTypes = {
+        page: PropTypes.number,
+        onLoad: PropTypes.func
+    }
 
     onBtnClick = (page, onLoad) => {
        

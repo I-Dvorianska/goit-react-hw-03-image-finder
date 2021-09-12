@@ -1,15 +1,13 @@
 import { Component } from 'react';
 import './Modal.css';
-
-// const Modal = ({image, onClick}) => {
-//     return <div className="Overlay" onClick={onClick}>
-//   <div className="Modal">
-//     <img src={image} alt="" />
-//   </div>
-//   </div>
-// }
+import PropTypes from 'prop-types';
 
 class Modal extends Component  {
+
+  static propTypes = {
+    image: PropTypes.string,
+    onClick: PropTypes.func
+  }
 
   componentDidMount() {
     window.addEventListener('keydown', this.onEscClick)
